@@ -1,8 +1,8 @@
 # Equipo SleepOutside
 
 ## Tablero de Trello
-[Enlace al Tablero de Trello del Equipo]
-(Nota: Reemplaza esto con tu enlace real de Trello)
+https://trello.com/b/rZLvqgWq/team-01
+
 
 ## Miembros del Equipo
 - Diego Garcia
