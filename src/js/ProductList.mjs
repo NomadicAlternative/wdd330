@@ -1,14 +1,15 @@
 import { renderListWithTemplate } from "./utils.mjs";
 
 function productCardTemplate(product) {
-  const imagePath = product.Image ? product.Image : "/images/noun_Tent_2517.svg";
+  // Use PrimaryMedium for product listing images
+  const imagePath = product.Images?.PrimaryMedium || product.Image || "/images/noun_Tent_2517.svg";
   const brandName = product.Brand ? product.Brand.Name : "";
   const productName = product.NameWithoutBrand || product.Name || "Unknown Product";
   const finalPrice = product.FinalPrice || product.ListPrice || "0.00";
   const productId = product.Id || "";
 
   return `<li class="product-card">
-    <a href="product_pages/?product=${productId}">
+    <a href="../product_pages/?product=${productId}">
       <img
         src="${imagePath}"
         alt="${productName}"
@@ -31,15 +32,30 @@ export default class ProductList {
 
   async init() {
     // Get the list of products from the data source
-    const list = await this.dataSource.getData();
+    const list = await this.dataSource.getData(this.category);
     this.products = list;
     this.filteredProducts = list;
+    
+    // Update the page title with category
+    this.updateTitle();
     
     // Render the list
     this.renderList(this.products);
     
     // Initialize search functionality
     this.initSearch();
+  }
+
+  updateTitle() {
+    const titleElement = document.querySelector(".products h2");
+    if (titleElement && this.category) {
+      // Capitalize first letter of each word in category
+      const formattedCategory = this.category
+        .split("-")
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+      titleElement.textContent = `Top Products: ${formattedCategory}`;
+    }
   }
 
   renderList(list, clear = true) {

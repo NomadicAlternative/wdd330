@@ -41,7 +41,8 @@ export default class ProductDetails {
     // Safely access all properties with fallbacks
     const brandName = this.product.Brand ? this.product.Brand.Name : "";
     const productName = this.product.NameWithoutBrand || this.product.Name || "Unknown Product";
-    const imagePath = this.product.Image ? this.product.Image : "/images/noun_Tent_2517.svg";
+    // Use PrimaryLarge for product detail images
+    const imagePath = this.product.Images?.PrimaryLarge || this.product.Image || "/images/noun_Tent_2517.svg";
     const finalPrice = this.product.FinalPrice || this.product.ListPrice || "0.00";
     const suggestedPrice = this.product.SuggestedRetailPrice || "";
     const colorName = this.product.Colors && this.product.Colors.length > 0 

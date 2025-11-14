@@ -21,20 +21,22 @@ function cartItemTemplate(item) {
   // Safely access all properties with fallbacks
   const colorName =
     item.Colors && item.Colors.length > 0 ? item.Colors[0].ColorName : "N/A";
-  const imagePath = item.Image
-    ? item.Image.replace("../", "/")
-    : "/images/noun_Tent_2517.svg";
+  
+  // Use the new API image structure (Images.PrimaryMedium)
+  const imagePath = item.Images?.PrimaryMedium || item.Image || "/images/noun_Tent_2517.svg";
+  
   const productName = item.Name || "Unknown Product";
   const price = item.FinalPrice || item.ListPrice || "0.00";
+  const productId = item.Id || "";
 
   const newItem = `<li class="cart-card divider">
-  <a href="#" class="cart-card__image">
+  <a href="/product_pages/?product=${productId}" class="cart-card__image">
     <img
       src="${imagePath}"
       alt="${productName}"
     />
   </a>
-  <a href="#">
+  <a href="/product_pages/?product=${productId}">
     <h2 class="card__name">${productName}</h2>
   </a>
   <p class="cart-card__color">${colorName}</p>
