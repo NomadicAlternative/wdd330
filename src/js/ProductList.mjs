@@ -26,19 +26,111 @@ export default class ProductList {
     this.dataSource = dataSource;
     this.listElement = listElement;
     this.products = [];
+    this.filteredProducts = [];
   }
 
   async init() {
     // Get the list of products from the data source
     const list = await this.dataSource.getData();
     this.products = list;
+    this.filteredProducts = list;
     
     // Render the list
     this.renderList(this.products);
+    
+    // Initialize search functionality
+    this.initSearch();
   }
 
-  renderList(list) {
+  renderList(list, clear = true) {
     // Use the reusable renderListWithTemplate function
-    renderListWithTemplate(productCardTemplate, this.listElement, list);
+    renderListWithTemplate(productCardTemplate, this.listElement, list, "afterbegin", clear);
+  }
+
+  initSearch() {
+    const searchInput = document.getElementById("productSearch");
+    const clearButton = document.getElementById("clearSearch");
+    const searchResults = document.getElementById("searchResults");
+    const noResults = document.getElementById("noResults");
+
+    if (!searchInput) return;
+
+    // Search input event listener
+    searchInput.addEventListener("input", (e) => {
+      const searchTerm = e.target.value.trim().toLowerCase();
+      
+      // Show/hide clear button
+      if (searchTerm) {
+        clearButton.classList.add("active");
+      } else {
+        clearButton.classList.remove("active");
+      }
+
+      this.filterProducts(searchTerm, searchResults, noResults);
+    });
+
+    // Clear button event listener
+    if (clearButton) {
+      clearButton.addEventListener("click", () => {
+        searchInput.value = "";
+        clearButton.classList.remove("active");
+        this.filterProducts("", searchResults, noResults);
+        searchInput.focus();
+      });
+    }
+  }
+
+  filterProducts(searchTerm, searchResults, noResults) {
+    // Add filtering class for animation
+    this.listElement.classList.add("filtering");
+
+    setTimeout(() => {
+      if (!searchTerm) {
+        // Show all products
+        this.filteredProducts = this.products;
+        this.listElement.innerHTML = "";
+        this.renderList(this.filteredProducts, false);
+        searchResults.classList.remove("active");
+        noResults.style.display = "none";
+        this.listElement.classList.remove("filtering");
+        return;
+      }
+
+      // Filter products based on search term
+      this.filteredProducts = this.products.filter((product) => {
+        const name = (product.Name || "").toLowerCase();
+        const brand = product.Brand ? (product.Brand.Name || "").toLowerCase() : "";
+        const description = (product.DescriptionHtmlSimple || "").toLowerCase();
+        const color = product.Colors && product.Colors.length > 0 
+          ? (product.Colors[0].ColorName || "").toLowerCase() 
+          : "";
+
+        return (
+          name.includes(searchTerm) ||
+          brand.includes(searchTerm) ||
+          description.includes(searchTerm) ||
+          color.includes(searchTerm)
+        );
+      });
+
+      // Clear and render filtered products
+      this.listElement.innerHTML = "";
+      
+      if (this.filteredProducts.length === 0) {
+        // Show no results message
+        noResults.style.display = "block";
+        searchResults.classList.remove("active");
+      } else {
+        // Show filtered products
+        this.renderList(this.filteredProducts, false);
+        noResults.style.display = "none";
+        
+        // Show results count
+        searchResults.textContent = `Found ${this.filteredProducts.length} product${this.filteredProducts.length !== 1 ? "s" : ""} matching "${searchTerm}"`;
+        searchResults.classList.add("active");
+      }
+
+      this.listElement.classList.remove("filtering");
+    }, 150);
   }
 }
