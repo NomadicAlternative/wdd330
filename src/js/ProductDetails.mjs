@@ -1,4 +1,4 @@
-import { setLocalStorage, getLocalStorage } from "./utils.mjs";
+import { setLocalStorage, getLocalStorage, alertMessage } from "./utils.mjs";
 
 export default class ProductDetails {
   constructor(productId, dataSource) {
@@ -37,7 +37,29 @@ export default class ProductDetails {
     // Save the updated cart back to localStorage
     setLocalStorage("so-cart", cart);
     
-    alert("Product added to cart!");
+    // Create a success alert div
+    const alert = document.createElement("div");
+    alert.classList.add("alert", "success");
+    alert.innerHTML = `<p>✓ ${this.product.NameWithoutBrand || this.product.Name} has been added to your cart!</p><span class="close-alert">X</span>`;
+    
+    // Add the alert to the top of main
+    const main = document.querySelector("main");
+    main.prepend(alert);
+    
+    // Scroll to top to show the alert
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Add click listener to close button
+    alert.querySelector(".close-alert").addEventListener("click", function() {
+      main.removeChild(alert);
+    });
+    
+    // Auto-remove alert after 5 seconds
+    setTimeout(() => {
+      if (alert.parentElement) {
+        main.removeChild(alert);
+      }
+    }, 5000);
   }
 
   renderProductDetails() {

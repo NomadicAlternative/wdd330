@@ -14,16 +14,28 @@ export default class CheckoutProcess {
 
   init() {
     this.list = getLocalStorage(this.key);
+    // Ensure list is an array
+    if (!Array.isArray(this.list)) {
+      this.list = [];
+    }
     this.calculateItemSummary();
   }
 
   calculateItemSummary() {
     const summaryElement = document.querySelector(
-      `${this.outputSelector} #cartTotal`
+      `${this.outputSelector} #cartTotal`,
     );
     const itemNumElement = document.querySelector(
-      `${this.outputSelector} #num-items`
+      `${this.outputSelector} #num-items`,
     );
+    
+    // Check if list is valid
+    if (!this.list || this.list.length === 0) {
+      itemNumElement.innerText = 0;
+      summaryElement.innerText = "$0.00";
+      return;
+    }
+    
     itemNumElement.innerText = this.list.length;
     const amounts = this.list.map((item) => item.FinalPrice);
     this.itemTotal = amounts.reduce((sum, item) => sum + item, 0);
@@ -80,13 +92,7 @@ export default class CheckoutProcess {
     json.shipping = this.shipping;
     json.items = this.packageItems(this.list);
 
-    try {
-      const res = await new ExternalServices().checkout(json);
-      console.log(res);
-      return res;
-    } catch (err) {
-      console.log(err);
-      throw err;
-    }
+    const res = await new ExternalServices().checkout(json);
+    return res;
   }
 }

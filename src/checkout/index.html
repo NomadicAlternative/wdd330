@@ -31,27 +31,67 @@
               <label for="city">City</label>
               <input type="text" name="city" id="city" required />
               <label for="state">State</label>
-              <input type="text" name="state" id="state" required />
+              <input
+                type="text"
+                name="state"
+                id="state"
+                required
+                minlength="2"
+                maxlength="2"
+                pattern="[A-Za-z]{2}"
+                title="Enter 2-letter state code"
+              />
               <label for="zip">Zip</label>
-              <input type="text" name="zip" id="zip" required />
+              <input
+                type="text"
+                name="zip"
+                id="zip"
+                required
+                pattern="\d{5}"
+                title="Enter 5-digit zip code"
+              />
             </div>
           </fieldset>
           <fieldset>
             <legend>Payment</legend>
             <div class="checkout__form">
               <label for="cardNumber">Card Number</label>
-              <input type="text" name="cardNumber" id="cardNumber" required />
+              <input
+                type="text"
+                name="cardNumber"
+                id="cardNumber"
+                required
+                pattern="\d{13,16}"
+                title="Enter 13-16 digit card number"
+              />
               <label for="expiration">Expiration</label>
-              <input type="text" name="expiration" id="expiration" required />
+              <input
+                type="text"
+                name="expiration"
+                id="expiration"
+                required
+                pattern="\d{2}/\d{2}"
+                placeholder="MM/YY"
+                title="Enter expiration in MM/YY format"
+              />
               <label for="code">Security Code</label>
-              <input type="text" name="code" id="code" required />
+              <input
+                type="text"
+                name="code"
+                id="code"
+                required
+                pattern="\d{3,4}"
+                title="Enter 3 or 4 digit security code"
+              />
             </div>
           </fieldset>
           <fieldset class="checkout-summary">
             <legend>Order Summary</legend>
             <ul>
               <li>
-                <label for="cartTotal">Item Subtotal(<span id="num-items">0</span>)</label>
+                <label for="cartTotal"
+                  >Item Subtotal(<span id="num-items">0</span>)</label
+                >
                 <span id="cartTotal">$0.00</span>
               </li>
               <li>
