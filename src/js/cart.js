@@ -16,10 +16,10 @@ function renderCartContents() {
   }
   const htmlItems = cartItems.map((item) => cartItemTemplate(item));
   document.querySelector(".product-list").innerHTML = htmlItems.join("");
-  
+
   // Calculate and display total
   calculateTotal(cartItems);
-  
+
   // Add event listeners to remove buttons
   addRemoveButtonListeners();
 }
@@ -29,14 +29,14 @@ function calculateTotal(cartItems) {
     const price = parseFloat(item.FinalPrice || item.ListPrice || 0);
     return sum + price;
   }, 0);
-  
+
   const totalElement = document.querySelector("#cart-total-amount");
   const footerElement = document.querySelector(".cart-footer");
-  
+
   if (totalElement) {
     totalElement.textContent = `$${total.toFixed(2)}`;
   }
-  
+
   if (footerElement) {
     footerElement.classList.remove("hide");
   }
@@ -51,20 +51,20 @@ function addRemoveButtonListeners() {
 
 function removeFromCart(event) {
   const productId = event.currentTarget.dataset.id;
-  
+
   // Get current cart
   let cart = getLocalStorage("so-cart") || [];
-  
+
   // Find the index of the first item with this ID
   const itemIndex = cart.findIndex((item) => item.Id === productId);
-  
+
   if (itemIndex !== -1) {
     // Remove the item from the cart
     cart.splice(itemIndex, 1);
-    
+
     // Save updated cart
     setLocalStorage("so-cart", cart);
-    
+
     // Re-render the cart
     renderCartContents();
   }
@@ -74,10 +74,11 @@ function cartItemTemplate(item) {
   // Safely access all properties with fallbacks
   const colorName =
     item.Colors && item.Colors.length > 0 ? item.Colors[0].ColorName : "N/A";
-  
+
   // Use the new API image structure (Images.PrimaryMedium)
-  const imagePath = item.Images?.PrimaryMedium || item.Image || "/images/noun_Tent_2517.svg";
-  
+  const imagePath =
+    item.Images?.PrimaryMedium || item.Image || "/images/noun_Tent_2517.svg";
+
   const productName = item.Name || "Unknown Product";
   const price = item.FinalPrice || item.ListPrice || "0.00";
   const productId = item.Id || "";

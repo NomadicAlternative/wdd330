@@ -638,11 +638,11 @@ legend {
     grid-template-columns: 1fr 1fr;
     align-items: center;
   }
-  
+
   .checkout__form label {
     margin-top: 0;
   }
-  
+
   .checkout__form input {
     grid-column: 2;
   }
@@ -679,5 +679,106 @@ legend {
 }
 
 .checkout-btn:hover {
+  background-color: var(--tertiary-color);
+}
+
+/* Alert Styles */
+.alert {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  color: #721c24;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: slideDown 0.3s ease;
+}
+
+.alert p {
+  margin: 0;
+  padding: 0;
+  flex-grow: 1;
+}
+
+.alert.success {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
+}
+
+.close-alert {
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: inherit;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+  padding: 0 0.5rem;
+}
+
+.close-alert:hover {
+  opacity: 1;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Success Page Styles */
+.success-message {
+  text-align: center;
+  padding: 3rem 2rem;
+  max-width: 600px;
+  margin: 2rem auto;
+  background: linear-gradient(
+    135deg,
+    rgba(212, 237, 218, 0.3),
+    rgba(195, 230, 203, 0.3)
+  );
+  border-radius: 16px;
+  border: 2px solid #c3e6cb;
+}
+
+.success-message h2 {
+  color: #155724;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-family: var(--font-headline);
+}
+
+.success-message p {
+  color: var(--dark-grey);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.success-actions {
+  margin-top: 2rem;
+}
+
+.success-actions .button {
+  display: inline-block;
+  padding: 0.8em 2em;
+  background-color: var(--secondary-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 1.2em;
+  transition: background-color 0.3s;
+}
+
+.success-actions .button:hover {
   background-color: var(--tertiary-color);
 }
