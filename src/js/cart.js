@@ -27,7 +27,8 @@ function renderCartContents() {
 function calculateTotal(cartItems) {
   const total = cartItems.reduce((sum, item) => {
     const price = parseFloat(item.FinalPrice || item.ListPrice || 0);
-    return sum + price;
+    const quantity = item.quantity || 1;
+    return sum + (price * quantity);
   }, 0);
 
   const totalElement = document.querySelector("#cart-total-amount");
@@ -55,12 +56,18 @@ function removeFromCart(event) {
   // Get current cart
   let cart = getLocalStorage("so-cart") || [];
 
-  // Find the index of the first item with this ID
+  // Find the item with this ID
   const itemIndex = cart.findIndex((item) => item.Id === productId);
 
   if (itemIndex !== -1) {
-    // Remove the item from the cart
-    cart.splice(itemIndex, 1);
+    // Check if item has quantity greater than 1
+    if (cart[itemIndex].quantity && cart[itemIndex].quantity > 1) {
+      // Decrement the quantity
+      cart[itemIndex].quantity -= 1;
+    } else {
+      // Remove the item from the cart completely
+      cart.splice(itemIndex, 1);
+    }
 
     // Save updated cart
     setLocalStorage("so-cart", cart);
@@ -82,6 +89,7 @@ function cartItemTemplate(item) {
   const productName = item.Name || "Unknown Product";
   const price = item.FinalPrice || item.ListPrice || "0.00";
   const productId = item.Id || "";
+  const quantity = item.quantity || 1;
 
   const newItem = `<li class="cart-card divider" data-id="${productId}">
   <a href="/product_pages/?product=${productId}" class="cart-card__image">
@@ -94,7 +102,7 @@ function cartItemTemplate(item) {
     <h2 class="card__name">${productName}</h2>
   </a>
   <p class="cart-card__color">${colorName}</p>
-  <p class="cart-card__quantity">qty: 1</p>
+  <p class="cart-card__quantity">qty: ${quantity}</p>
   <p class="cart-card__price">$${price}</p>
   <button class="cart-card__remove" data-id="${productId}" aria-label="Remove ${productName} from cart">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

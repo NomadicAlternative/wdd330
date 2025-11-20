@@ -31,8 +31,23 @@ export default class ProductDetails {
       cart = [];
     }
     
-    // Add the new product to the cart array
-    cart.push(this.product);
+    // Check if the product already exists in the cart
+    const existingProductIndex = cart.findIndex(item => item.Id === this.product.Id);
+    
+    let alertMessage;
+    if (existingProductIndex !== -1) {
+      // Product exists, increment quantity
+      if (!cart[existingProductIndex].quantity) {
+        cart[existingProductIndex].quantity = 1;
+      }
+      cart[existingProductIndex].quantity += 1;
+      alertMessage = `✓ ${this.product.NameWithoutBrand || this.product.Name} quantity updated to ${cart[existingProductIndex].quantity}!`;
+    } else {
+      // Product doesn't exist, add it with quantity 1
+      this.product.quantity = 1;
+      cart.push(this.product);
+      alertMessage = `✓ ${this.product.NameWithoutBrand || this.product.Name} has been added to your cart!`;
+    }
     
     // Save the updated cart back to localStorage
     setLocalStorage("so-cart", cart);
@@ -40,7 +55,7 @@ export default class ProductDetails {
     // Create a success alert div
     const alert = document.createElement("div");
     alert.classList.add("alert", "success");
-    alert.innerHTML = `<p>✓ ${this.product.NameWithoutBrand || this.product.Name} has been added to your cart!</p><span class="close-alert">X</span>`;
+    alert.innerHTML = `<p>${alertMessage}</p><span class="close-alert">X</span>`;
     
     // Add the alert to the top of main
     const main = document.querySelector("main");
