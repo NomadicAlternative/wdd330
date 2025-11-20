@@ -1,4 +1,5 @@
 import { getLocalStorage } from "./utils.mjs";
+import ExternalServices from "./ExternalServices.mjs";
 
 export default class CheckoutProcess {
   constructor(key, outputSelector) {
@@ -51,5 +52,41 @@ export default class CheckoutProcess {
     shipping.innerText = "$" + this.shipping.toFixed(2);
     tax.innerText = "$" + this.tax;
     orderTotal.innerText = "$" + this.orderTotal;
+  }
+
+  packageItems(items) {
+    return items.map((item) => ({
+      id: item.Id,
+      name: item.Name,
+      price: item.FinalPrice,
+      quantity: 1,
+    }));
+  }
+
+  async checkout(form) {
+    const formDataToJSON = (formElement) => {
+      const formData = new FormData(formElement);
+      const convertedJSON = {};
+      formData.forEach((value, key) => {
+        convertedJSON[key] = value;
+      });
+      return convertedJSON;
+    };
+
+    const json = formDataToJSON(form);
+    json.orderDate = new Date().toISOString();
+    json.orderTotal = this.orderTotal;
+    json.tax = this.tax;
+    json.shipping = this.shipping;
+    json.items = this.packageItems(this.list);
+
+    try {
+      const res = await new ExternalServices().checkout(json);
+      console.log(res);
+      return res;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
   }
 }

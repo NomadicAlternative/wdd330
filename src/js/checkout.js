@@ -22,7 +22,7 @@ document.querySelector("#checkoutSubmit").addEventListener("click", (e) => {
   
   if(chk_status) {
     // In a real application, we would submit the form here
-    // myCheckout.checkout();
+    myCheckout.checkout(myForm);
     console.log("Form is valid, proceeding with checkout...");
   }
 });
