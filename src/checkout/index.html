@@ -18,6 +18,58 @@
     <main class="divider">
       <section class="products">
         <h2>Review & Place your Order</h2>
+        <form name="checkout" id="checkout">
+          <fieldset>
+            <legend>Shipping</legend>
+            <div class="checkout__form">
+              <label for="fname">First Name</label>
+              <input type="text" name="fname" id="fname" required />
+              <label for="lname">Last Name</label>
+              <input type="text" name="lname" id="lname" required />
+              <label for="street">Street</label>
+              <input type="text" name="street" id="street" required />
+              <label for="city">City</label>
+              <input type="text" name="city" id="city" required />
+              <label for="state">State</label>
+              <input type="text" name="state" id="state" required />
+              <label for="zip">Zip</label>
+              <input type="text" name="zip" id="zip" required />
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Payment</legend>
+            <div class="checkout__form">
+              <label for="cardNumber">Card Number</label>
+              <input type="text" name="cardNumber" id="cardNumber" required />
+              <label for="expiration">Expiration</label>
+              <input type="text" name="expiration" id="expiration" required />
+              <label for="code">Security Code</label>
+              <input type="text" name="code" id="code" required />
+            </div>
+          </fieldset>
+          <fieldset class="checkout-summary">
+            <legend>Order Summary</legend>
+            <ul>
+              <li>
+                <label for="cartTotal">Item Subtotal(<span id="num-items">0</span>)</label>
+                <span id="cartTotal">$0.00</span>
+              </li>
+              <li>
+                <label for="shipping">Shipping Estimate</label>
+                <span id="shipping">$0.00</span>
+              </li>
+              <li>
+                <label for="tax">Tax</label>
+                <span id="tax">$0.00</span>
+              </li>
+              <li>
+                <label for="orderTotal"><b>Order Total</b></label>
+                <span id="orderTotal">$0.00</span>
+              </li>
+            </ul>
+          </fieldset>
+          <button id="checkoutSubmit" type="submit">Checkout</button>
+        </form>
       </section>
     </main>
 
