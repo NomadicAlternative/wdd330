@@ -11,13 +11,35 @@ function renderCartContents() {
   if (!cartItems || cartItems.length === 0) {
     document.querySelector(".product-list").innerHTML =
       "<p>Your cart is empty.</p>";
+    document.querySelector(".cart-footer").classList.add("hide");
     return;
   }
   const htmlItems = cartItems.map((item) => cartItemTemplate(item));
   document.querySelector(".product-list").innerHTML = htmlItems.join("");
   
+  // Calculate and display total
+  calculateTotal(cartItems);
+  
   // Add event listeners to remove buttons
   addRemoveButtonListeners();
+}
+
+function calculateTotal(cartItems) {
+  const total = cartItems.reduce((sum, item) => {
+    const price = parseFloat(item.FinalPrice || item.ListPrice || 0);
+    return sum + price;
+  }, 0);
+  
+  const totalElement = document.querySelector("#cart-total-amount");
+  const footerElement = document.querySelector(".cart-footer");
+  
+  if (totalElement) {
+    totalElement.textContent = `$${total.toFixed(2)}`;
+  }
+  
+  if (footerElement) {
+    footerElement.classList.remove("hide");
+  }
 }
 
 function addRemoveButtonListeners() {

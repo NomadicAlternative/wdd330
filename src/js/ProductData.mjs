@@ -12,12 +12,24 @@ export default class ProductData {
   constructor() {}
 
   async getData(category) {
+    if (!baseURL) {
+      throw new Error("Server URL not configured. Please check .env file.");
+    }
+    if (!category) {
+      throw new Error("Category is required.");
+    }
     const response = await fetch(`${baseURL}products/search/${category}`);
     const data = await convertToJson(response);
     return data.Result;
   }
 
   async findProductById(id) {
+    if (!baseURL) {
+      throw new Error("Server URL not configured. Please check .env file.");
+    }
+    if (!id) {
+      throw new Error("Product ID is required.");
+    }
     const response = await fetch(`${baseURL}product/${id}`);
     const data = await convertToJson(response);
     return data.Result;
