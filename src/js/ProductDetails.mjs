@@ -23,8 +23,13 @@ export default class ProductDetails {
   }
 
   addToCart() {
-    // Get the current cart from localStorage, or initialize as empty array
-    let cart = getLocalStorage("so-cart") || [];
+    // Get the current cart from localStorage
+    let cart = getLocalStorage("so-cart");
+    
+    // Ensure cart is an array
+    if (!Array.isArray(cart)) {
+      cart = [];
+    }
     
     // Add the new product to the cart array
     cart.push(this.product);
