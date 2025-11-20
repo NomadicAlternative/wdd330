@@ -4,12 +4,15 @@
   "description": "Boilerplate for WDD 330 SleepOutside project",
   "main": "main.js",
   "scripts": {
+    "prestart": "node check-env.js",
     "start": "vite",
+    "prebuild": "node check-env.js",
     "build": "vite build --emptyOutDir",
     "preview": "vite preview",
     "lint": "eslint *.js src/**/*.js",
     "format": "prettier --ignore-path ./.gitignore --write \"./**/*.{html,json,js,ts,css}\"",
-    "test": "jest"
+    "test": "jest",
+    "setup": "node check-env.js"
   },
   "author": "Shane Thompson",
   "license": "ISC",

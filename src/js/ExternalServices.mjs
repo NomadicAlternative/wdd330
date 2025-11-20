@@ -1,5 +1,13 @@
 const baseURL = import.meta.env.VITE_SERVER_URL;
 
+// Check if the environment variable is set
+if (!baseURL) {
+  console.error('❌ ERROR: VITE_SERVER_URL is not configured!');
+  console.error('📝 Please create a .env file in the root directory with:');
+  console.error('   VITE_SERVER_URL=https://wdd330-backend.onrender.com/');
+  console.error('\n💡 You can copy .env.sample to .env to fix this.');
+}
+
 async function convertToJson(res) {
   const jsonResponse = await res.json();
   if (res.ok) {
