@@ -28,7 +28,7 @@ function calculateTotal(cartItems) {
   const total = cartItems.reduce((sum, item) => {
     const price = parseFloat(item.FinalPrice || item.ListPrice || 0);
     const quantity = item.quantity || 1;
-    return sum + (price * quantity);
+    return sum + price * quantity;
   }, 0);
 
   const totalElement = document.querySelector("#cart-total-amount");
