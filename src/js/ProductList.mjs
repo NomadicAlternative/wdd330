@@ -32,19 +32,28 @@ export default class ProductList {
   }
 
   async init() {
-    // Get the list of products from the data source
-    const list = await this.dataSource.getData(this.category);
-    this.products = list;
-    this.filteredProducts = list;
+    // Show loading indicator
+    this.listElement.innerHTML = '<li class="loading-message">Loading products... Please wait (the server may take a moment to wake up)</li>';
     
-    // Update the page title with category
-    this.updateTitle();
-    
-    // Render the list
-    this.renderList(this.products);
-    
-    // Initialize search functionality
-    this.initSearch();
+    try {
+      // Get the list of products from the data source
+      const list = await this.dataSource.getData(this.category);
+      this.products = list;
+      this.filteredProducts = list;
+      
+      // Update the page title with category
+      this.updateTitle();
+      
+      // Clear loading message and render the list
+      this.listElement.innerHTML = '';
+      this.renderList(this.products);
+      
+      // Initialize search functionality
+      this.initSearch();
+    } catch (error) {
+      console.error("Error loading products:", error);
+      this.listElement.innerHTML = '<li class="error-message">Error loading products. Please try again later.</li>';
+    }
   }
 
   updateTitle() {
